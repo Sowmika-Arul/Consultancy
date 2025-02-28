@@ -10,7 +10,7 @@
 - Function Update
 - Staff Details 
 - Gallery
-## Contanct
+## Contact
 - Principal
 - Chairman
 - Secretary
