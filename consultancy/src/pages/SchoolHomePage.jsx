@@ -13,7 +13,7 @@ export default function SchoolHomePage() {
   const images = [
     "/images/Srivenkateshwar_School.jpg",
     "/images/full view.jpeg",
-    "/images/hostel.avif",
+    "/images/hindi class.jpeg",
   ];
 
   return (

@@ -6,9 +6,9 @@ import "slick-carousel/slick/slick-theme.css";
 export default function Gallery() {
   // Dummy Data for Books
   const books = [
-    { id: 1, title: "Book One", desc: "This is the first book.", img: "/images/hostel.avif" },
+    { id: 1, title: "Book One", desc: "This is the first book.", img: "/images/temple.jpeg" },
     { id: 2, title: "Book Two", desc: "This is the second book.", img: "/images/Assembly.jpeg" },
-    { id: 3, title: "Book Three", desc: "This is the third book.", img: "/images/Science lab.jpg" },
+    { id: 3, title: "Book Three", desc: "This is the third book.", img: "/images/writing.jpeg" },
     { id: 4, title: "Book Four", desc: "This is the fourth book.", img: "/images/sports.jpg" },
     { id: 5, title: "Book Five", desc: "This is the fifth book.", img: "/images/library.jpg" },
   ];

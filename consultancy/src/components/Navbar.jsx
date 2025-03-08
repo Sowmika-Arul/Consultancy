@@ -11,7 +11,10 @@ export default function Navbar() {
       transition={{ duration: 0.5, ease: "easeOut" }}
       className="bg-white shadow-lg fixed top-0 left-0 w-full z-50 p-4 flex justify-between items-center"
     >
-      <h1 className="text-2xl font-bold text-red-900">Sri Venkateshwara School</h1>
+     <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+  <img src="/images/school logo.png" alt="School Logo" width="30" height="30" />
+  <h1 className="text-2xl font-bold text-red-900">Sri Venkateshwara A1</h1>
+</div>
       <div className="space-x-6">
         <Link to="/" className="hover:text-blue-500 transition">Home</Link>
         <Link to="/facilities" className="hover:text-blue-500 transition">Facilities</Link>
