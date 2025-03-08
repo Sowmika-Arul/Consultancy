@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SchoolHomePage from "./pages/SchoolHomePage";
 import AboutPage from "./pages/AboutPage";
+import Login from "./pages/AdminLogin";
 import FacilitiesPage from "./pages/FacilitiesPage";
+import Gallery from "./pages/Gallery";
 import ContactPage from "./pages/ContactPage";
 import Navbar from "./components/Navbar"; // Import the Navbar component
 import "./index.css";
@@ -15,6 +17,8 @@ function App() {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/facilities" element={<FacilitiesPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/gallery" element={<Gallery />} />
       </Routes>
     </Router>
   );

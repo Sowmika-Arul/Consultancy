@@ -5,6 +5,7 @@ const facilities = [
   { name: "Science Labs", desc: "Equipped with state-of-the-art tools for research.", img: "/images/Science lab.jpg" },
   { name: "Sports", desc: "Indoor & outdoor courts for various sports.", img: "/images/sports.jpg" },
   { name: "Hostels", desc: "Hostels: Comfortable and secure residential spaces designed for student living and community engagement.", img: "/images/hostel.avif" },
+  { name: "Transport", desc: "Safe and reliable transportation services ensuring a comfortable commute for students.", img: "/images/hostel.avif" },
 ];
 
 export default function FacilitiesPage() {
