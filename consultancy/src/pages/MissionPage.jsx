@@ -1,144 +1,75 @@
-import React from "react";
+import { motion } from "framer-motion";
+import { Pin } from "lucide-react";
 
-// Styles for the container and sections
-const containerStyle = {
-  maxWidth: "1200px",
-  margin: "0 auto",
-  padding: "20px",
-  background: "linear-gradient(135deg, #f5f7fa, #c3cfe2)", // Gradient background for the page
-  borderRadius: "12px",
-  boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)",
-};
+const missions = [
+  "Sanction the role of teachers, parents, and others in the continuance of effective child development.",
+  "Adapt children with holistic education with appropriate tolerance.",
+  "Teaching activity-based learning in the school curricular.",
+  "Host the teacher and support staff regularly to meet the growth needs for education.",
+  "Yoke value and character in the minds of the children from their early days.",
+  "Achieve obedience to the regulatory module during applicable practices.",
+  "Multifaceted the learning track and methodology to express the needs of today's world."
+];
 
-const missionTitleStyle = {
-  fontSize: "3rem",
-  fontWeight: "700",
-  textAlign: "center",
-  color: "#2c3e50",
-  marginBottom: "30px",
-  letterSpacing: "1px",
-  textTransform: "uppercase",
-  background: "linear-gradient(to right, #2980b9, #8e44ad)",
-  "-webkit-background-clip": "text",
-};
-
-const sectionStyle = {
-  marginBottom: "40px",
-  padding: "30px",
-  borderRadius: "10px",
-  backgroundColor: "#ffffff", // White background for each section
-  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Box shadow for depth
-  transition: "transform 0.3s ease, box-shadow 0.3s ease",
-  hoverEffect: {
-    transform: "scale(1.05)",
-    boxShadow: "0 10px 20px rgba(0, 0, 0, 0.1)",
-  },
-};
-
-const sectionTitleStyle = {
-  fontSize: "2rem",
-  fontWeight: "bold",
-  color: "#2980b9", // Blue color for titles
-  marginBottom: "15px",
-  transition: "color 0.3s ease",
-  cursor: "pointer",
-};
-
-const sectionContentStyle = {
-  fontSize: "1.2rem",
-  color: "#555",
-  lineHeight: "1.8",
-  marginBottom: "20px",
-  letterSpacing: "0.5px",
-};
-
-const buttonStyle = {
-  padding: "12px 30px",
-  fontSize: "1.2rem",
-  backgroundColor: "#2980b9",
-  color: "#fff",
-  borderRadius: "25px",
-  border: "none",
-  cursor: "pointer",
-  transition: "background-color 0.3s ease, transform 0.3s ease",
-  fontWeight: "600",
-};
-
-const buttonHoverStyle = {
-  backgroundColor: "#3498db", // Darker blue on hover
-  transform: "scale(1.05)",
-};
-
-const missionPageStyle = {
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-};
-
-const MissionPage = () => {
+export default function Mission() {
   return (
-    <div style={containerStyle}>
-      <h2 style={missionTitleStyle}>Our Mission</h2>
-      <div style={missionPageStyle}>
-        <div style={sectionStyle}>
-          <h3 style={sectionTitleStyle}>Effective Child Development</h3>
-          <p style={sectionContentStyle}>
-            Sanction the role of teachers, parents, and others to continuously support effective child development.
-          </p>
-        </div>
+    <div className="max-w-3xl mx-auto px-6 py-10 mt-24 relative bg-green-900 border-[6px] border-gray-700 rounded-lg shadow-lg overflow-hidden">
+      
+      {/* Blackboard Texture Effect */}
+      <div className="absolute inset-0 bg-[url('/blackboard-texture.png')] opacity-20 pointer-events-none"></div>
 
-        <div style={sectionStyle}>
-          <h3 style={sectionTitleStyle}>Holistic Education</h3>
-          <p style={sectionContentStyle}>
-            Adapt children with holistic education, promoting tolerance and understanding in every step.
-          </p>
-        </div>
+      {/* Title with Chalk Effect */}
+      <motion.h2
+        className="text-3xl font-bold text-center mb-6 text-white tracking-wide relative font-[Chalkduster]"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        Our Mission
+        <motion.span
+          className="block w-28 h-1 bg-white mx-auto mt-2 rounded-full opacity-80"
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        ></motion.span>
+      </motion.h2>
 
-        <div style={sectionStyle}>
-          <h3 style={sectionTitleStyle}>Activity-Based Learning</h3>
-          <p style={sectionContentStyle}>
-            Implement activity-based learning within the school curriculum to engage children in an interactive way.
-          </p>
-        </div>
-
-        <div style={sectionStyle}>
-          <h3 style={sectionTitleStyle}>Regular Support for Teachers</h3>
-          <p style={sectionContentStyle}>
-            Host teachers and support staff regularly to meet the growth needs of education for both students and educators.
-          </p>
-        </div>
-
-        <div style={sectionStyle}>
-          <h3 style={sectionTitleStyle}>Instilling Values and Character</h3>
-          <p style={sectionContentStyle}>
-            Embed values and character into children from their early days, building a foundation for their future.
-          </p>
-        </div>
-
-        <div style={sectionStyle}>
-          <h3 style={sectionTitleStyle}>Obedience and Regulation</h3>
-          <p style={sectionContentStyle}>
-            Achieve obedience to regulatory modules by encouraging students to follow applicable practices.
-          </p>
-        </div>
-
-        <div style={sectionStyle}>
-          <h3 style={sectionTitleStyle}>Adapting to Modern Learning Needs</h3>
-          <p style={sectionContentStyle}>
-            Multifaceted learning tracks and methodologies to express the needs of today's world and prepare children for the future.
-          </p>
-          <button
-            style={buttonStyle}
-            onMouseEnter={(e) => (e.target.style.backgroundColor = buttonHoverStyle.backgroundColor)}
-            onMouseLeave={(e) => (e.target.style.backgroundColor = buttonStyle.backgroundColor)}
+      {/* Mission Notes Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative px-2">
+        {missions.map((mission, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
+            whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+            className={`relative ${index === missions.length - 1 ? "col-span-2" : ""}`}
           >
-            Join Us in Our Mission
-          </button>
-        </div>
+            {/* Pinned Paper Effect */}
+            <div className="relative p-5 bg-white text-gray-900 shadow-lg rounded-md transition-all hover:shadow-xl
+              before:absolute before:inset-0 before:bg-[url('/paper-crumpled-texture.png')] before:opacity-40 before:pointer-events-none
+              after:absolute after:-bottom-2 after:left-0 after:w-full after:h-4 after:bg-gradient-to-t after:from-gray-400 after:to-transparent after:opacity-30
+              border border-gray-300"
+            >
+              
+              {/* Pushpin Effect */}
+              <motion.div
+                className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-red-600 text-white p-2 rounded-full shadow-lg z-10"
+                initial={{ y: -10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.3, delay: index * 0.1 + 0.2 }}
+              >
+                <Pin size={16} />
+              </motion.div>
+
+              {/* Mission Text with Handwritten Font */}
+              <p className="text-base font-medium leading-relaxed font-[PatrickHand] text-gray-800">
+                {mission}
+              </p>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </div>
   );
-};
-
-export default MissionPage;
+}
