@@ -35,9 +35,9 @@ app.post("/login", async (req, res) => {
     return res.status(400).json({ message: "Invalid credentials" });
   }
 
-  const isPasswordValid = await bcrypt.compare(password, admin.password);
-  if (!isPasswordValid) {
-    return res.status(400).json({ message: "Invalid credentials" });
+  // const isPasswordValid = await bcrypt.compare(password, admin.password);
+  if (password != admin.password) {
+    return res.status(400).json({ message: "Invalid password credentials" });
   }
 
   const token = jwt.sign({ email: admin.email }, process.env.JWT_SECRET, { expiresIn: "1h" });
