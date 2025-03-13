@@ -3,7 +3,7 @@ import SchoolHomePage from "./pages/SchoolHomePage";
 import AboutPage from "./pages/AboutPage";
 import Login from "./pages/AdminLogin";
 import FacilitiesPage from "./pages/FacilitiesPage";
-import Gallery from "./pages/Gallery";
+import Gallery from "./pages/Gallery1";
 import ContactPage from "./pages/ContactPage";
 import EventForm from "./pages/EventForm";
 import Mission from "./pages/MissionPage";

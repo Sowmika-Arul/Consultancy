@@ -1,60 +1,57 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 export default function Gallery() {
-  // Dummy Data for Books
-  const books = [
-    { id: 1, title: "Book One", desc: "This is the first book.", img: "/images/temple.jpeg" },
-    { id: 2, title: "Book Two", desc: "This is the second book.", img: "/images/Assembly.jpeg" },
-    { id: 3, title: "Book Three", desc: "This is the third book.", img: "/images/writing.jpeg" },
-    { id: 4, title: "Book Four", desc: "This is the fourth book.", img: "/images/sports.jpg" },
-    { id: 5, title: "Book Five", desc: "This is the fifth book.", img: "/images/library.jpg" },
-  ];
+  const [books, setBooks] = useState([]);
 
-  
+  useEffect(() => {
+    fetch("http://localhost:5000/events")
+      .then((response) => response.json())
+      .then((data) => setBooks(data))
+      .catch((error) => console.error("Error fetching books:", error));
+  }, []);
+
   const settings = {
-    dots: true, 
-    infinite: true, 
+    dots: true,
+    infinite: true,
     speed: 500,
-    slidesToShow: 4, // Show 4 items per row
+    slidesToShow: 4,
     slidesToScroll: 1,
     responsive: [
       {
-        breakpoint: 1024, // Tablets
+        breakpoint: 1024,
         settings: {
-          slidesToShow: 3, 
+          slidesToShow: 3,
         },
       },
       {
-        breakpoint: 768, // Mobile
+        breakpoint: 768,
         settings: {
           slidesToShow: 2,
         },
       },
       {
-        breakpoint: 480, // Small screens
+        breakpoint: 480,
         settings: {
           slidesToShow: 1,
         },
       },
     ],
   };
-  
 
   return (
     <div style={styles.gallery}>
       <Slider {...settings}>
         {books.map((book) => (
-          <Book key={book.id} book={book} />
+          <Book key={book._id} book={book} />
         ))}
       </Slider>
     </div>
   );
 }
 
-// Individual Book Component
 function Book({ book }) {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -64,31 +61,28 @@ function Book({ book }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Book Cover */}
       <div
         style={{
           ...styles.cover,
-          backgroundImage: `url("${book.img}")`,
+          backgroundImage: `url("${book.imageUrl}")`,
           transform: isHovered ? "rotateY(-80deg)" : "rotateY(0deg)",
         }}
       ></div>
 
-      {/* Text Inside */}
       <div style={{ ...styles.textInside, opacity: isHovered ? "1" : "0" }}>
         <p style={styles.title}>{book.title}</p>
-        <p style={styles.desc}>{book.desc}</p>
+        <p style={styles.desc}>{book.description}</p>
       </div>
     </div>
   );
 }
 
-// Inline Styles
 const styles = {
   gallery: {
     width: "80%",
     margin: "auto",
     padding: "20px",
-    marginTop: "30px", // Push the gallery down
+    marginTop: "30px",
   },
   book: {
     position: "relative",
@@ -140,4 +134,3 @@ const styles = {
     fontSize: "14px",
   },
 };
-
