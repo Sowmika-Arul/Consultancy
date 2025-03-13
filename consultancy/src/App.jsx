@@ -5,6 +5,7 @@ import Login from "./pages/AdminLogin";
 import FacilitiesPage from "./pages/FacilitiesPage";
 import Gallery from "./pages/Gallery";
 import ContactPage from "./pages/ContactPage";
+import EventForm from "./pages/EventForm";
 import Mission from "./pages/MissionPage";
 import Navbar from "./components/Navbar"; // Import the Navbar component
 import "./index.css";
@@ -21,6 +22,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/mission" element={<Mission />} />
+        <Route path="/eventForm" element={<EventForm />} />
       </Routes>
     </Router>
   );
