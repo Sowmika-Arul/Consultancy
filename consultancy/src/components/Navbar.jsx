@@ -20,6 +20,8 @@ export default function Navbar() {
         <Link to="/facilities" className="hover:text-blue-500 transition">Facilities</Link>
         <Link to="/about" className="hover:text-blue-500 transition">About</Link>
         <Link to="/contact" className="hover:text-blue-500 transition">Contact</Link>
+        <Link to="/mission" className="hover:text-blue-500 transition">Mission</Link>
+        <Link to="/vision" className="hover:text-blue-500 transition">Vission</Link>
       </div>
     </motion.nav>
   );
