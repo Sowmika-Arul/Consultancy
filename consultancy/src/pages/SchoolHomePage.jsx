@@ -4,6 +4,7 @@ import "swiper/css/navigation";
 import "swiper/css/autoplay";
 import "swiper/css/effect-fade";
 import Gallery from './Gallery.jsx';
+import Carousel from './ImageCarousel.jsx';
 import Features from './Features.jsx';
 import { Navigation, Autoplay, EffectFade } from "swiper/modules";
 import { motion } from "framer-motion";
@@ -11,12 +12,6 @@ import { CalendarDays, GraduationCap, Users, Globe } from "lucide-react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 
 export default function SchoolHomePage() {
-  const images = [
-    "/images/Srivenkateshwar_School.jpg",
-    "/images/full view.jpeg",
-    "/images/hindi class.jpeg",
-  ];
-
   return (
     <div className="min-h-screen text-gray-900">
       {/* Hero Section with Fade-in & Scale-up */}
@@ -109,32 +104,7 @@ export default function SchoolHomePage() {
         </div>
       </section>
 
-      {/* Image Carousel with Smooth Entrance */}
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        viewport={{ once: true }}
-        className="w-full max-w-7xl mx-auto my-12 overflow-hidden rounded-lg shadow-lg"
-      >
-        <Swiper
-          navigation={true}
-          autoplay={{ delay: 3000, disableOnInteraction: false }}
-          effect="fade"
-          modules={[Navigation, Autoplay, EffectFade]}
-          className="w-full"
-        >
-          {images.map((img, index) => (
-            <SwiperSlide key={index}>
-              <img
-                src={img}
-                alt={`Slide ${index + 1}`}
-                className="w-full h-[500px] object-cover rounded-lg"
-              />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </motion.div>
+     <Carousel/>
       <Features/>
       <Gallery/>
     </div>
