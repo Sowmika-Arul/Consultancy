@@ -4,10 +4,12 @@ import AboutPage from "./pages/AboutPage";
 import Login from "./pages/AdminLogin";
 import Gallery from "./pages/Gallery1";
 import Facilities from "./pages/Gallery";
+import Dashboard from "./pages/AdminDash";
 import ContactPage from "./pages/ContactPage";
 import Vission from "./pages/Vission";
 import EventForm from "./pages/EventForm";
 import Mission from "./pages/MissionPage";
+import Faculty from "./pages/FacultyPage";
 import Navbar from "./components/Navbar"; // Import the Navbar component
 import "./index.css";
 
@@ -24,7 +26,8 @@ function App() {
         <Route path="/mission" element={<Mission />} />
         <Route path="/eventForm" element={<EventForm />} />
         <Route path="/vission" element={<Vission />} />
-        <Route path="/facilities" element={<Facilities />} />
+        <Route path="/adminDashBoard" element={<Dashboard />} />
+        <Route path="/faculty" element={<Faculty />} />
       </Routes>
     </Router>
   );

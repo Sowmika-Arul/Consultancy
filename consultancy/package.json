@@ -17,6 +17,7 @@
     "@lottiefiles/react-lottie-player": "^3.6.0",
     "@mui/material": "^6.4.7",
     "@mui/styles": "^6.4.7",
+    "@radix-ui/react-select": "^2.1.7",
     "@radix-ui/react-slot": "^1.1.2",
     "@tailwindcss/vite": "^4.0.9",
     "class-variance-authority": "^0.7.1",
