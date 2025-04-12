@@ -1,87 +1,60 @@
 import { useState, useEffect } from "react";
+import { ArrowLeftCircle, ArrowRightCircle } from "lucide-react";
 import "./Gallery1.css";
 
-export default function Gallery1() {
+export default function GalleryModern() {
   const [events, setEvents] = useState([]);
-  const [selectedYear, setSelectedYear] = useState("all");
-  const [currentPage, setCurrentPage] = useState(0);
-  const [isBookOpen, setIsBookOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     fetch("http://localhost:5000/events")
-      .then((response) => response.json())
+      .then((res) => res.json())
       .then((data) => setEvents(data))
-      .catch((error) => console.error("Error fetching events:", error));
+      .catch((err) => console.error("Error fetching events:", err));
   }, []);
 
-  const filteredEvents =
-    selectedYear === "all"
-      ? events
-      : events.filter((event) => event.year === selectedYear);
-  const event = filteredEvents[currentPage] || {};
+  const goPrev = () => {
+    setCurrentIndex((prev) => Math.max(prev - 1, 0));
+  };
+
+  const goNext = () => {
+    setCurrentIndex((prev) => Math.min(prev + 1, events.length - 1));
+  };
+
+  const currentEvent = events[currentIndex] || {};
 
   return (
-    <div className="gallery-container">
-      {/* Filter Sidebar */}
-      <div className="filter-sidebar">
-        <h3>Filter by Year</h3>
-        <select onChange={(e) => setSelectedYear(e.target.value)}>
-          <option value="all">All</option>
-          {[...new Set(events.map((event) => event.year))].map((year) => (
-            <option key={year} value={year}>
-              {year}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Book Component */}
-      <div className="book-container">
-        <div className={`book ${isBookOpen ? "open" : ""}`}>
-          {/* Clickable Cover */}
-          <div className="book-cover" onClick={() => setIsBookOpen(true)}>
-            School Events
-          </div>
-
-          {/* Full Image Page */}
-          {isBookOpen && (
-            <div className="page">
-              {event.imageUrl ? (
-                <>
-                  <img src={event.imageUrl} alt={event.title} />
-                  <div className="event-details">
-                    <h2>{event.title || "No Event"}</h2>
-                    <p>{event.description || "No description available."}</p>
-                  </div>
-                </>
-              ) : (
-                <h2>No Image Available</h2>
-              )}
-            </div>
-          )}
+    <div className="animated-bg">
+       <h1 className="gallery-heading">Celebrations</h1> {/* 🔥 New heading */}
+      <div className="modern-gallery-wrapper">
+        <div className="modern-left">
+          <h2>{currentEvent.title}</h2>
+          <p>{currentEvent.description}</p>
         </div>
 
-        {/* Navigation Buttons */}
-        {isBookOpen && (
-          <div className="navigation">
-            <button
-              className="flip-button"
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}
+        <div className="modern-right">
+          <div className="modern-carousel">
+            <div
+              className="modern-track"
+              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
-              &larr; Prev
+              {events.map((event, idx) => (
+                <div className="modern-slide" key={idx}>
+                  <img src={event.imageUrl} alt={event.title} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="modern-controls">
+            <button onClick={goPrev} disabled={currentIndex === 0}>
+              <ArrowLeftCircle size={40} />
             </button>
-            <button
-              className="flip-button"
-              onClick={() =>
-                setCurrentPage((prev) =>
-                  Math.min(prev + 1, filteredEvents.length - 1)
-                )
-              }
-            >
-              Next &rarr;
+            <button onClick={goNext} disabled={currentIndex === events.length - 1}>
+              <ArrowRightCircle size={40} />
             </button>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

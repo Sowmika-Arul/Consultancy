@@ -41,7 +41,7 @@ export default function SchoolHomePage() {
             Join a learning environment where innovation meets excellence.
           </motion.p>
           <a
-      href="#explore"
+      href="/about"
       className="relative mt-6 inline-block px-6 py-3 bg-red-900 text-white font-semibold text-lg rounded-full 
                  shadow-md border-2 border-white/30 overflow-hidden group transition-all duration-300 ease-in-out hover:scale-105"
     >
@@ -81,10 +81,10 @@ export default function SchoolHomePage() {
       <section className="relative -mt-30 z-20">
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
-            { value: "34", label: "Years Since Establishment", icon: <CalendarDays size={40} className="text-gray-900" /> },
-            { value: "9000", label: "Students in 2022", icon: <GraduationCap size={40} className="text-gray-900" /> },
-            { value: "1500", label: "Staff", icon: <Users size={40} className="text-gray-900" /> },
-            { value: "300000", label: "Alumni", icon: <Globe size={40} className="text-gray-900" /> },
+            { value: "15", label: "Years Since Establishment", icon: <CalendarDays size={40} className="text-gray-900" /> },
+            { value: "1000+", label: "Students in 2025", icon: <GraduationCap size={40} className="text-gray-900" /> },
+            { value: "100+", label: "Staff", icon: <Users size={40} className="text-gray-900" /> },
+            { value: "30000+", label: "Alumni", icon: <Globe size={40} className="text-gray-900" /> },
           ].map((stat, index) => (
             <motion.div
               key={index}

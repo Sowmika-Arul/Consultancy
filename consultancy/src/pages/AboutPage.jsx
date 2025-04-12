@@ -7,6 +7,7 @@ export default function AboutPage() {
     <div>
     <Vission/>
     <Mission/>
+    <br></br>
     </div>
   );
 }

@@ -2,10 +2,9 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import bcrypt from 'bcryptjs';
+import cloudinary from 'cloudinary';
+import multer from 'multer';
 import jwt from 'jsonwebtoken';
-
-// Models
 import PGStaff from './models/PGStaff.js';
 import BTStaff from './models/BTStaff.js';
 import SGTStaff from './models/SGTStaff.js';
@@ -23,6 +22,17 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log('✅ MongoDB Connected'))
   .catch((err) => console.error('❌ MongoDB Connection Error:', err));
+
+// Cloudinary Configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Multer Storage Setup (using memory storage for Cloudinary upload)
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 // Admin Schema & Model
 const adminSchema = new mongoose.Schema({
@@ -141,6 +151,63 @@ app.get('/api/faculty', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to fetch faculty data' });
+  }
+});
+
+// Admission Schema & Model
+const admissionSchema = new mongoose.Schema({
+  name: String,
+  gender: String,
+  dob: String,
+  fatherName: String,
+  motherName: String,
+  profession: String,
+  previousSchool: String,
+  address: String,
+  whatsapp: String,
+  sms: String,
+  correspondence: String,
+  phone: String,
+  aadhar: String,
+  caste: String,
+  bpl: String,
+  disability: String,
+  photo: String, // Cloudinary image URL
+});
+
+const Admission = mongoose.model('Admission', admissionSchema);
+
+// Submit Form Route with Cloudinary Integration
+app.post('/submit-form', upload.single('photo'), async (req, res) => {
+  try {
+    // If a photo is uploaded, upload to Cloudinary
+    let photoUrl = null;
+    if (req.file) {
+      const result = await cloudinary.uploader.upload_stream(
+        { resource_type: 'image' },
+        (error, result) => {
+          if (error) {
+            throw new Error('Cloudinary upload failed');
+          }
+          photoUrl = result.secure_url; // Get the secure URL from Cloudinary
+        }
+      );
+      result.end(req.file.buffer); // Upload file buffer to Cloudinary
+    }
+
+    // Create and save admission record
+    const admissionData = {
+      ...req.body,
+      photo: photoUrl, // Store Cloudinary URL in the database
+    };
+
+    const admission = new Admission(admissionData);
+    await admission.save();
+
+    res.status(200).json({ message: 'Form submitted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to submit form' });
+    console.error(error);
   }
 });
 

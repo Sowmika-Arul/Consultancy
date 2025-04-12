@@ -19,12 +19,12 @@ export default function ContactSection() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-purple-200 px-6 py-12">
+    <div className="min-h-screen flex items-center justify-center px-6 py-12">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="max-w-5xl w-full bg-white/60 backdrop-blur-xl shadow-xl rounded-xl p-8 grid grid-cols-1 md:grid-cols-2 gap-6 border border-white/40"
+        className="max-w-5xl w-full shadow-xl rounded-xl p-8 grid grid-cols-1 md:grid-cols-2 gap-6"
       >
         {/* Left Side - Management Details */}
         <div>
@@ -43,7 +43,7 @@ export default function ContactSection() {
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.2 }}
-                className="bg-white/70 backdrop-blur-lg p-4 rounded-lg shadow-md border border-white/50 flex items-center gap-4"
+                className="p-4 rounded-lg shadow-md border border-gray-200 flex items-center gap-4"
               >
                 <Phone size={28} className="text-red-800" />
                 <div>
@@ -61,11 +61,9 @@ export default function ContactSection() {
           initial={{ opacity: 0, x: 20 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="bg-white/70 backdrop-blur-lg p-6 rounded-xl shadow-md border border-white/50 flex flex-col justify-center items-center relative"
+          className="p-6 rounded-xl shadow-md border border-gray-200 flex flex-col justify-center items-center relative"
         >
-          {/* Big Email Icon */}
           <Mail size={100} className="text-gray-500 mb-2 opacity-70" />
-
           <h3 className="text-2xl font-bold text-center text-gray-900 mb-4">
             Send Us a Message
           </h3>

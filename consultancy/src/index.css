@@ -122,3 +122,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+.underline-input {
+  @apply border-b border-black bg-transparent w-full focus:outline-none text-sm placeholder-gray-400;
+}
+
