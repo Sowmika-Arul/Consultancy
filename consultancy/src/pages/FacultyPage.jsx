@@ -39,7 +39,7 @@ export default function FacultyDashboard() {
 
   useEffect(() => {
     setLoading(true);
-    fetch('http://localhost:5000/api/faculty?type=all')
+    fetch('https://consultancy-sea9.onrender.com/api/faculty?type=all')
       .then(res => res.json())
       .then(data => {
         setFaculty(data);

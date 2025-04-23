@@ -42,7 +42,7 @@ const EventForm = () => {
     const eventData = { title, description, imageUrl };
     
     try {
-      await fetch("http://localhost:5000/events", {
+      await fetch("https://consultancy-sea9.onrender.com/events", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

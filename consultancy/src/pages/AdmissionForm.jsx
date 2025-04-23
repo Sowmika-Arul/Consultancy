@@ -47,7 +47,7 @@ export default function SVASAdmissionForm() {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/submit-form", {
+      const res = await fetch("https://consultancy-sea9.onrender.com/submit-form", {
         method: "POST",
         body: data,
       });

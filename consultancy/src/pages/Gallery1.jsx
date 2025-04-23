@@ -7,7 +7,7 @@ export default function GalleryModern() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    fetch("http://localhost:5000/events")
+    fetch("https://consultancy-sea9.onrender.com/events")
       .then((res) => res.json())
       .then((data) => setEvents(data))
       .catch((err) => console.error("Error fetching events:", err));
