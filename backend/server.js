@@ -164,20 +164,18 @@ const admissionSchema = new mongoose.Schema({
   profession: String,
   previousSchool: String,
   address: String,
-  whatsapp: String,
-  sms: String,
-  correspondence: String,
   phone: String,
   aadhar: String,
   caste: String,
-  bpl: String,
   disability: String,
-  photo: String, // Cloudinary image URL
+  admissionStandard: String, 
+  photo: String,
+  date: String,  
+  signature: String, 
 });
 
 const Admission = mongoose.model('Admission', admissionSchema);
 
-// Submit Form Route with Cloudinary Integration
 app.post('/submit-form', upload.single('photo'), async (req, res) => {
   try {
     // If a photo is uploaded, upload to Cloudinary
@@ -195,13 +193,18 @@ app.post('/submit-form', upload.single('photo'), async (req, res) => {
       result.end(req.file.buffer); // Upload file buffer to Cloudinary
     }
 
+    console.log("Received data:", req.body);
+
     // Create and save admission record
     const admissionData = {
       ...req.body,
       photo: photoUrl, // Store Cloudinary URL in the database
     };
+    console.log(req.body);
+    const admission = new Admission({
+      ...admissionData,
+    });
 
-    const admission = new Admission(admissionData);
     await admission.save();
 
     res.status(200).json({ message: 'Form submitted successfully' });

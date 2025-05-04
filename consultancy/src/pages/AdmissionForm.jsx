@@ -10,17 +10,15 @@ export default function SVASAdmissionForm() {
     profession: "",
     previousSchool: "",
     address: "",
-    whatsapp: "",
-    sms: "",
-    correspondence: "",
     phone: "",
     aadhar: "",
     caste: "",
-    bpl: "",
     disability: "",
-    admissionDate: "",
+    admissionStandard: "", // <-- new field
     photo: null,
-  });
+    date: new Date().toISOString().split("T")[0],
+    signature: "",
+  });  
 
   const [photoPreview, setPhotoPreview] = useState(null);
 
@@ -38,22 +36,65 @@ export default function SVASAdmissionForm() {
       reader.readAsDataURL(file);
     }
   };
+  console.log("Form Data before submission:", formData);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    const requiredFields = [
+      "name", "gender", "dob", "fatherName", "motherName", "profession",
+      "previousSchool", "address", "phone", "aadhar", "caste", "disability",
+      "admissionStandard", // <-- new
+      "date", "signature"
+    ];    
+  
+    for (let field of requiredFields) {
+      if (!formData[field]) {
+        alert(`Please fill in the ${field.replace(/([A-Z])/g, ' $1')} field.`);
+        return;
+      }
+    }
+  
+    // Photo check (optional but recommended)
+    if (!formData.photo) {
+      alert("Please upload a student photograph.");
+      return;
+    }
+  
     const data = new FormData();
     for (const key in formData) {
       data.append(key, formData[key]);
     }
-
+  
     try {
       const res = await fetch("https://consultancy-sea9.onrender.com/submit-form", {
         method: "POST",
         body: data,
       });
-
+  
       if (res.ok) {
         alert("Form submitted successfully!");
+  
+        // Reset the form
+        setFormData({
+          name: "",
+          gender: "",
+          dob: "",
+          fatherName: "",
+          motherName: "",
+          profession: "",
+          previousSchool: "",
+          address: "",
+          phone: "",
+          aadhar: "",
+          caste: "",
+          disability: "",
+          admissionStandard: "", // <-- new field
+          photo: null,
+          date: new Date().toISOString().split("T")[0],
+          signature: "",
+        });
+        setPhotoPreview(null);
       } else {
         const error = await res.json();
         alert("Submission failed: " + error.message);
@@ -63,7 +104,8 @@ export default function SVASAdmissionForm() {
       console.error(err);
     }
   };
-
+  
+  
   return (
     <div className="max-w-4xl mx-auto p-8 bg-white shadow-lg border mt-10 font-serif text-sm">
       <div className="flex justify-between items-start mb-4">
@@ -85,19 +127,6 @@ export default function SVASAdmissionForm() {
           />
         </div>
       </div>
-
-      {/* <p className="mb-6">
-        Application for admission to <span className="inline-block border-b border-black w-40"></span> Class &nbsp;&nbsp;&nbsp;
-        Date:
-        <input
-          type="date"
-          name="admissionDate"
-          value={formData.admissionDate}
-          onChange={handleChange}
-          className="ml-2 underline-input inline-block w-40 border-b border-black"
-        />
-      </p> */}
-
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="mb-4">
           <label>1. Name of the Student (IN CAPITAL LETTERS):
@@ -109,10 +138,10 @@ export default function SVASAdmissionForm() {
           <div className="flex items-center gap-6">
             <span>3. Gender:</span>
             <label className="flex items-center gap-2">
-              <input type="radio" name="gender" value="Boy" checked={formData.gender === "Boy"} onChange={handleChange} /> Male
+              <input type="radio" name="gender" value="Male" checked={formData.gender === "Male"} onChange={handleChange} /> Male
             </label>
             <label className="flex items-center gap-2">
-              <input type="radio" name="gender" value="Girl" checked={formData.gender === "Girl"} onChange={handleChange} /> Female
+              <input type="radio" name="gender" value="Female" checked={formData.gender === "Female"} onChange={handleChange} /> Female
             </label>
           </div>
         </div>
@@ -153,27 +182,8 @@ export default function SVASAdmissionForm() {
           </label>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          <div>
-            <label>Mob. No. for Whatsapp:
-              <input type="text" name="whatsapp" value={formData.whatsapp} onChange={handleChange} className="underline-input" />
-            </label>
-          </div>
-          <div>
-            <label>SMS:
-              <input type="text" name="sms" value={formData.sms} onChange={handleChange} className="underline-input" />
-            </label>
-          </div>
-        </div>
-
         <div className="mb-4">
-          <label>10. Correspondence Address:
-            <textarea name="correspondence" value={formData.correspondence} onChange={handleChange} className="underline-input h-16" />
-          </label>
-        </div>
-
-        <div className="mb-4">
-          <label>Ph. No.:
+          <label>Phone Number.:
             <input type="text" name="phone" value={formData.phone} onChange={handleChange} className="underline-input" />
           </label>
         </div>
@@ -191,16 +201,24 @@ export default function SVASAdmissionForm() {
         </div>
 
         <div className="mb-4">
-          <label>13. Whether belongs to BPL (Yes/No):
-            <input type="text" name="bpl" value={formData.bpl} onChange={handleChange} className="underline-input" />
-          </label>
-        </div>
-
-        <div className="mb-4">
           <label>14. Physically Handicapped (Yes/No):
             <input type="text" name="disability" value={formData.disability} onChange={handleChange} className="underline-input" />
           </label>
         </div>
+
+        <div className="mb-4">
+  <label>15. Admission Sought for Standard:
+    <input
+      type="text"
+      name="admissionStandard"
+      value={formData.admissionStandard}
+      onChange={handleChange}
+      className="underline-input"
+      placeholder="e.g., 5th Grade"
+    />
+  </label>
+</div>
+        
 
         <div className="border-t pt-4 mt-6 text-sm">
           <p className="italic mb-2">
@@ -208,9 +226,29 @@ export default function SVASAdmissionForm() {
           </p>
 
           <div className="flex justify-between mt-6">
-            <span>Date: <span className="inline-block border-b border-black w-32"></span></span>
-            <span>Signature of Father / Guardian: <span className="inline-block border-b border-black w-64"></span></span>
-          </div>
+  <span>
+    Date: 
+    <input
+      type="date"
+      name="date" // Ensure the name attribute is "date"
+      value={formData.date}
+      onChange={handleChange}
+      className="inline-block border-b border-black w-32 text-center pl-3"
+    />
+  </span>
+  <span>
+    Signature of Father / Guardian: 
+    <input
+      type="text"
+      name="signature" // Ensure the name attribute is "signature"
+      value={formData.signature}
+      onChange={handleChange}
+      className="inline-block border-b border-black w-64 text-center pl-3"
+      placeholder="Enter Signature"
+    />
+  </span>
+</div>
+
         </div>
 
         <div className="flex justify-between mt-6 text-xs uppercase tracking-widest">
