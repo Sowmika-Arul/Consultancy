@@ -47,6 +47,8 @@ export default function FacultyDashboard() {
         data.forEach(item => {
           counts[item.type] = (counts[item.type] || 0) + 1;
         });
+        // Add total count for 'all'
+        counts['all'] = data.length;
         setStaffCounts(counts);
         setLoading(false);
       })

@@ -10,6 +10,7 @@ import { Navigation, Autoplay, EffectFade } from "swiper/modules";
 import { motion } from "framer-motion";
 import { CalendarDays, GraduationCap, Users, Globe } from "lucide-react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import { Link } from 'react-router-dom';
 
 export default function SchoolHomePage() {
   return (
@@ -40,8 +41,7 @@ export default function SchoolHomePage() {
           >
             Join a learning environment where innovation meets excellence.
           </motion.p>
-          <a
-      href="/about"
+          <Link to ="/about"
       className="relative mt-6 inline-block px-6 py-3 bg-red-900 text-white font-semibold text-lg rounded-full 
                  shadow-md border-2 border-white/30 overflow-hidden group transition-all duration-300 ease-in-out hover:scale-105"
     >
@@ -66,7 +66,7 @@ export default function SchoolHomePage() {
           }
         `}
       </style>
-    </a>
+    </Link>
     <div className="absolute right-[-10px] top-1.2/2 transform -translate-y-1/2 w-40 h-40">
   <DotLottieReact 
     src="https://lottie.host/f308b9bf-e716-4a33-802b-4563d2ab866d/O9vE4Ijmvd.lottie" 

@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone, User } from "lucide-react";
+import emailjs from '@emailjs/browser';
 
 export default function ContactSection() {
+  const formRef = useRef();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -15,7 +18,24 @@ export default function ContactSection() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("Message Sent Successfully! ✅");
+
+    emailjs
+      .sendForm(
+        'service_g84gtl3',      // 🔁 Replace with actual EmailJS service ID
+        'template_j9nbzo1',     // 🔁 Replace with actual EmailJS template ID
+        formRef.current,
+        'AcwHyKvGLHdGTDQpD'       // 🔁 Replace with your public key (user ID)
+      )
+      .then(
+        () => {
+          alert('Message Sent Successfully! ✅');
+          setFormData({ name: "", email: "", message: "" });
+        },
+        (error) => {
+          console.error('FAILED...', error);
+          alert('Failed to send message. ❌ Please try again.');
+        }
+      );
   };
 
   return (
@@ -56,7 +76,7 @@ export default function ContactSection() {
           </div>
         </div>
 
-        {/* Right Side - Contact Form with Big Email Icon */}
+        {/* Right Side - Contact Form */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -68,7 +88,7 @@ export default function ContactSection() {
             Send Us a Message
           </h3>
 
-          <form className="w-full space-y-4" onSubmit={handleSubmit}>
+          <form ref={formRef} className="w-full space-y-4" onSubmit={handleSubmit}>
             <div className="flex items-center bg-gray-100 rounded-lg px-4 py-3 shadow-md">
               <User size={22} className="text-gray-700" />
               <input
@@ -76,6 +96,7 @@ export default function ContactSection() {
                 name="name"
                 placeholder="Your Name"
                 className="bg-transparent w-full pl-3 outline-none text-gray-800"
+                value={formData.name}
                 required
                 onChange={handleChange}
               />
@@ -87,6 +108,7 @@ export default function ContactSection() {
                 name="email"
                 placeholder="Your Email"
                 className="bg-transparent w-full pl-3 outline-none text-gray-800"
+                value={formData.email}
                 required
                 onChange={handleChange}
               />
@@ -96,6 +118,7 @@ export default function ContactSection() {
               rows="4"
               placeholder="Your Message"
               className="w-full p-3 bg-gray-100 rounded-lg outline-none text-gray-800 resize-none shadow-md"
+              value={formData.message}
               required
               onChange={handleChange}
             ></textarea>
