@@ -14,46 +14,44 @@ export default function GalleryModern() {
   }, []);
 
   const goPrev = () => {
-    setCurrentIndex((prev) => Math.max(prev - 1, 0));
+    setCurrentIndex((prev) => (prev === 0 ? events.length - 1 : prev - 1));
   };
 
   const goNext = () => {
-    setCurrentIndex((prev) => Math.min(prev + 1, events.length - 1));
+    setCurrentIndex((prev) => (prev === events.length - 1 ? 0 : prev + 1));
   };
 
   const currentEvent = events[currentIndex] || {};
 
   return (
-    <div className="animated-bg">
-       <h1 className="gallery-heading">Celebrations</h1> {/* 🔥 New heading */}
-      <div className="modern-gallery-wrapper">
-        <div className="modern-left">
-          <h2>{currentEvent.title}</h2>
-          <p>{currentEvent.description}</p>
+    <div className="gallery-container">
+      <div className="animated-blobs">
+        <div className="blob" style={{ background: "#a18cd1", top: "10%", left: "5%", animationDelay: "0s" }}></div>
+        <div className="blob" style={{ background: "#fbc2eb", top: "20%", left: "70%", animationDelay: "2s" }}></div>
+        <div className="blob" style={{ background: "#fad0c4", top: "40%", left: "30%", animationDelay: "4s" }}></div>
+        <div className="blob" style={{ background: "#a1c4fd", top: "60%", left: "80%", animationDelay: "6s" }}></div>
+        <div className="blob" style={{ background: "#c2e9fb", top: "75%", left: "15%", animationDelay: "8s" }}></div>
+        <div className="blob" style={{ background: "#d4fc79", top: "85%", left: "50%", animationDelay: "10s" }}></div>
+        <div className="ring"></div>
+      </div>
+      <h1 className="gallery-heading">Celebrations</h1>
+
+      <div className="carousel-card">
+        <div className="image-container">
+          <img src={currentEvent.imageUrl} alt={currentEvent.title} className="carousel-image" />
+          <div className="overlay">
+            <h2 className="overlay-title">{currentEvent.title}</h2>
+            <p className="overlay-description">{currentEvent.description}</p>
+          </div>
         </div>
 
-        <div className="modern-right">
-          <div className="modern-carousel">
-            <div
-              className="modern-track"
-              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-            >
-              {events.map((event, idx) => (
-                <div className="modern-slide" key={idx}>
-                  <img src={event.imageUrl} alt={event.title} />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="modern-controls">
-            <button onClick={goPrev} disabled={currentIndex === 0}>
-              <ArrowLeftCircle size={40} />
-            </button>
-            <button onClick={goNext} disabled={currentIndex === events.length - 1}>
-              <ArrowRightCircle size={40} />
-            </button>
-          </div>
+        <div className="carousel-buttons">
+          <button onClick={goPrev} className="nav-btn">
+            <ArrowLeftCircle size={36} />
+          </button>
+          <button onClick={goNext} className="nav-btn">
+            <ArrowRightCircle size={36} />
+          </button>
         </div>
       </div>
     </div>

@@ -1,220 +1,191 @@
-/* === Animated Background Container === */
-.animated-bg {
-    position: relative;
-    background: linear-gradient(to top right, #fdf2f8, #f0f9ff);
-    padding: 4rem 2rem;
-    border-radius: 2rem;
-    overflow: hidden;
-    z-index: 0;
+/* Gallery Container */
+.gallery-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(2px);
+  z-index: 1;
+}
+
+.gallery-heading {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 2.5rem;
+  color: #333;
+  text-shadow: 1px 1px 3px #ccc;
+}
+
+/* Carousel Card Styling */
+.carousel-card {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(0, 0, 0, 0.1));
+  border-radius: 16px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Image Container */
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 500px; /* Adjusted for better proportions */
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+/* Image Styling */
+.carousel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+/* Hover Effect for Image */
+.carousel-card:hover .carousel-image {
+  transform: scale(1.05);
+}
+
+/* Overlay Styling */
+.overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  color: white;
+  padding: 1.5rem 2rem;
+  border-radius: 0 0 16px 16px;
+}
+
+.overlay-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.overlay-description {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+/* Carousel Buttons */
+.carousel-buttons {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  transform: translateY(-50%);
+}
+
+.nav-btn {
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0.8rem;
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover Effect for Buttons */
+.nav-btn:hover {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transform: scale(1.1);
+}
+
+/* Card Hover Effect */
+.carousel-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Animated Blobs */
+.animated-blobs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.blob {
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  opacity: 0.25;
+  animation: floatBlob 18s infinite ease-in-out;
+  mix-blend-mode: multiply;
+}
+
+@keyframes floatBlob {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
   }
-  
-  /* Floating shapes */
-  .animated-bg::before,
-  .animated-bg::after {
-    content: "";
-    position: absolute;
-    border-radius: 50%;
+  50% {
+    transform: translateY(-20px) scale(1.05);
+  }
+}
+
+/* Ring Animation */
+.ring {
+  position: absolute;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  top: 20%;
+  left: 20%;
+  animation: pulse 6s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
     opacity: 0.3;
-    animation: floatShape 8s ease-in-out infinite;
-    z-index: 0;
   }
-  
-  .animated-bg::before {
-    width: 200px;
-    height: 200px;
-    background: #c084fc;
-    top: -60px;
-    left: -60px;
+  50% {
+    transform: scale(1.5);
+    opacity: 0.1;
   }
-  
-  .animated-bg::after {
-    width: 150px;
-    height: 150px;
-    background: #38bdf8;
-    bottom: -60px;
-    right: -60px;
-    animation-delay: 4s;
-  }
-  
-  @keyframes floatShape {
-    0%, 100% {
-      transform: translateY(0px) translateX(0px);
-    }
-    50% {
-      transform: translateY(-20px) translateX(20px);
-    }
-  }
-  
-  .modern-gallery-wrapper {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    gap: 4rem;
-    max-width: 1200px;
-    margin: 4rem auto;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-  }  
-  
-  .modern-left {
-    flex: 1;
-    max-width: 480px;
-    padding: 2rem;
-    background: rgba(255, 255, 255, 0.65);
-    backdrop-filter: blur(10px);
-    border-radius: 1rem;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-    animation: slideFadeIn 0.8s ease-out;
-  }
-  
-  .modern-left h2 {
-    font-size: 2.25rem;
-    font-weight: 800;
-    color: #1f2937;
-    margin-bottom: 1rem;
-  }
-  
-  .modern-left p {
-    font-size: 1.1rem;
-    color: #374151;
-    line-height: 1.6;
-  }
-  
-  .modern-right {
-    flex: 1.5;
-    max-width: 650px;
-  }
-  
-  .modern-carousel {
-    overflow: hidden;
-    border-radius: 1.25rem;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-  }
-  
-  .modern-track {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-  }
-  
-  .modern-slide {
-    min-width: 100%;
-    height: 440px;
-  }
-  
-  .modern-slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 1.25rem;
-    transition: transform 0.4s ease;
-  }
-  
-  .modern-slide img:hover {
-    transform: scale(1.02);
-  }
-  
-  .modern-controls {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin-top: 1.5rem;
-  }
-  
-  .modern-controls button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #6b7280;
-    transition: all 0.3s ease;
-  }
-  
-  .modern-controls button:hover {
-    color: #111827;
-    transform: scale(1.1);
-  }
-  
-  .modern-controls button:disabled {
-    color: #d1d5db;
-    cursor: not-allowed;
-  }
-  
-  @keyframes slideFadeIn {
-    0% {
-      transform: translateX(-40px);
-      opacity: 0;
-    }
-    100% {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-  
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .gallery-heading {
-    text-align: center;
-    font-size: 3rem;
-    font-weight: 800;
-    color: white;
-    margin-bottom: 3rem;
-    animation: zoomFade 1.2s ease-out;
-    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    font-size: 2.5rem;
   }
-  
-  @keyframes zoomFade {
-    0% {
-      opacity: 0;
-      transform: scale(0.8) translateY(-20px);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1) translateY(0);
-    }
+
+  .carousel-card {
+    max-width: 100%;
+    border-radius: 12px;
   }
-  
-  
-  @keyframes bounceInDown {
-    0% {
-      opacity: 0;
-      transform: translateY(-100px);
-    }
-    60% {
-      opacity: 1;
-      transform: translateY(20px);
-    }
-    100% {
-      transform: translateY(0);
-    }
+
+  .image-container {
+    height: 400px;
   }
-  
-  /* Animate the left panel */
-  .modern-left {
-    animation: fadeInLeft 1.2s ease-in-out;
+
+  .overlay-title {
+    font-size: 2rem;
   }
-  
-  @keyframes fadeInLeft {
-    0% {
-      transform: translateX(-50px);
-      opacity: 0;
-    }
-    100% {
-      transform: translateX(0);
-      opacity: 1;
-    }
+
+  .overlay-description {
+    font-size: 1rem;
   }
-  
-  /* Animate the carousel track */
-  .modern-carousel {
-    animation: zoomIn 1.2s ease;
-  }
-  
-  @keyframes zoomIn {
-    0% {
-      transform: scale(0.8);
-      opacity: 0;
-    }
-    100% {
-      transform: scale(1);
-      opacity: 1;
-    }
-  }
-  
+}
