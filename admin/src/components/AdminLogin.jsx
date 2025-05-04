@@ -37,19 +37,17 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-tr from-indigo-100 via-white to-pink-100">
+    <div className="flex items-center justify-center min-h-screen px-4">
       <motion.div
-        initial={{ opacity: 0, y: -30 }}
+        initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7 }}
-        className="w-[95%] sm:w-[420px] p-8 bg-white/60 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/30"
+        transition={{ duration: 0.6 }}
+        className="w-full max-w-md p-8 bg-white rounded-3xl shadow-2xl"
       >
         <div className="flex flex-col items-center">
-          <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} transition={{ duration: 0.3 }}>
-            <ShieldCheck className="w-12 h-12 text-indigo-600 drop-shadow-lg" />
-          </motion.div>
-          <h2 className="text-3xl font-bold mt-4 text-gray-800 tracking-wide">Admin Panel Login</h2>
-          <p className="text-sm text-gray-500 mt-1">Welcome back! Please enter your credentials.</p>
+          <ShieldCheck className="w-12 h-12 text-indigo-600 mb-2" />
+          <h2 className="text-3xl font-bold text-gray-800 mb-1">Admin Login</h2>
+          <p className="text-sm text-gray-500">Please enter your credentials to proceed</p>
         </div>
 
         {error && (
@@ -62,35 +60,23 @@ export default function AdminLogin() {
           </motion.p>
         )}
 
-        {/* Email Field */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.4 }}
-          className="mt-6"
-        >
+        <div className="mt-6">
           <label className="text-sm text-gray-600">Email</label>
           <input
             type="email"
             placeholder="admin@example.com"
-            className="w-full mt-1 p-3 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none transition-all bg-white/90"
+            className="w-full mt-1 p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-400 outline-none"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-        </motion.div>
+        </div>
 
-        {/* Password Field */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-          className="relative mt-4"
-        >
+        <div className="relative mt-4">
           <label className="text-sm text-gray-600">Password</label>
           <input
             type={showPassword ? "text" : "password"}
             placeholder="••••••••"
-            className="w-full mt-1 p-3 pr-10 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none transition-all bg-white/90"
+            className="w-full mt-1 p-3 pr-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-400 outline-none"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -101,16 +87,17 @@ export default function AdminLogin() {
           >
             {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
           </button>
-        </motion.div>
+        </div>
 
-        {/* Submit Button */}
         <motion.button
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
           onClick={handleLogin}
           disabled={loading}
-          className={`w-full mt-6 py-3 rounded-xl text-white font-semibold text-lg transition-all duration-300 ${
-            loading ? "bg-indigo-300 cursor-not-allowed" : "bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
+          className={`w-full mt-6 py-3 rounded-xl text-white font-semibold text-lg transition duration-300 ${
+            loading
+              ? "bg-indigo-300 cursor-not-allowed"
+              : "bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600"
           }`}
         >
           {loading ? "Logging in..." : "Login"}
