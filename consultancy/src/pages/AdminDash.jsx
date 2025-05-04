@@ -1,20 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle, Clock, UserX, UserPlus } from "lucide-react";
+import { CheckCircle, Clock, UserX, UserPlus, X } from "lucide-react";
 
 export default function AdmissionDashboard() {
   const [search, setSearch] = useState("");
+  const [applicants, setApplicants] = useState([]);
+  const [selectedApplicant, setSelectedApplicant] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const applicants = [
-    { id: 1, name: "Aarav Sharma", status: "Approved", grade: "Grade 1", date: "2025-03-01" },
-    { id: 2, name: "Saanvi Patel", status: "Pending", grade: "Grade 2", date: "2025-03-03" },
-    { id: 3, name: "Vihaan Verma", status: "Rejected", grade: "LKG", date: "2025-03-04" },
-    { id: 4, name: "Anaya Reddy", status: "Approved", grade: "UKG", date: "2025-03-05" },
-    { id: 5, name: "Ishaan Nair", status: "Pending", grade: "Grade 3", date: "2025-03-06" },
-  ];
+  useEffect(() => {
+    fetch("https://consultancy-sea9.onrender.com/api/admissions")
+      .then((res) => res.json())
+      .then((data) => {
+        setApplicants(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+        setLoading(false);
+      });
+  }, []);
 
-  const filtered = applicants.filter((applicant) =>
-    applicant.name.toLowerCase().includes(search.toLowerCase())
+  const filtered = applicants.filter((a) =>
+    a.name.toLowerCase().includes(search.toLowerCase())
   );
 
   const summary = {
@@ -31,7 +39,7 @@ export default function AdmissionDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-blue-50 to-white p-6 text-gray-800 mt-12 center">
+    <div className="min-h-screen bg-gradient-to-tr from-blue-50 to-white p-6 text-gray-800 mt-12">
       <motion.h1
         className="text-3xl font-bold mb-6 text-blue-900"
         initial={{ opacity: 0, y: -20 }}
@@ -57,45 +65,87 @@ export default function AdmissionDashboard() {
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      {/* Applicants Table */}
+      {/* Table */}
       <div className="overflow-auto rounded-xl shadow border border-gray-200">
-        <table className="min-w-full bg-white">
-          <thead className="bg-blue-100 text-blue-800 text-sm font-semibold">
-            <tr>
-              <th className="p-3 text-left">Name</th>
-              <th className="p-3 text-left">Grade</th>
-              <th className="p-3 text-left">Date Applied</th>
-              <th className="p-3 text-left">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((a) => (
-              <tr key={a.id} className="border-t hover:bg-gray-50">
-                <td className="p-3">{a.name}</td>
-                <td className="p-3">{a.grade}</td>
-                <td className="p-3">{a.date}</td>
-                <td className="p-3">
-                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${statusColor[a.status]}`}>
-                    {a.status}
-                  </span>
-                </td>
-              </tr>
-            ))}
-            {filtered.length === 0 && (
+        {loading ? (
+          <p className="p-6 text-center text-gray-500">Loading applicants...</p>
+        ) : (
+          <table className="min-w-full bg-white">
+            <thead className="bg-blue-100 text-blue-800 text-sm font-semibold">
               <tr>
-                <td colSpan="4" className="text-center p-6 text-gray-500">
-                  No applicants found.
-                </td>
+                <th className="p-3 text-left">Name</th>
+                <th className="p-3 text-left">Grade</th>
+                <th className="p-3 text-left">Date</th>
+                <th className="p-3 text-left">Status</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filtered.map((a, index) => (
+                <tr
+                  key={index}
+                  className="border-t hover:bg-blue-50 cursor-pointer"
+                  onClick={() => setSelectedApplicant(a)}
+                >
+                  <td className="p-3">{a.name}</td>
+                  <td className="p-3">{a.admissionStandard}</td>
+                  <td className="p-3">{a.date}</td>
+                  <td className="p-3">
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${statusColor[a.status]}`}>
+                      {a.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+              {filtered.length === 0 && (
+                <tr>
+                  <td colSpan="4" className="text-center p-6 text-gray-500">
+                    No applicants found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
       </div>
+
+      {/* Modal to view detailed applicant info */}
+      {selectedApplicant && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-xl shadow-xl relative overflow-y-auto max-h-[90vh]">
+            <button
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-800"
+              onClick={() => setSelectedApplicant(null)}
+            >
+              <X size={20} />
+            </button>
+            <h2 className="text-xl font-bold mb-4">Applicant Details</h2>
+            <div className="space-y-2 text-sm">
+              <p><strong>Name:</strong> {selectedApplicant.name}</p>
+              <p><strong>Gender:</strong> {selectedApplicant.gender}</p>
+              <p><strong>Date of Birth:</strong> {selectedApplicant.dob}</p>
+              <p><strong>Father's Name:</strong> {selectedApplicant.fatherName}</p>
+              <p><strong>Mother's Name:</strong> {selectedApplicant.motherName}</p>
+              <p><strong>Profession:</strong> {selectedApplicant.profession}</p>
+              <p><strong>Previous School:</strong> {selectedApplicant.previousSchool}</p>
+              <p><strong>Address:</strong> {selectedApplicant.address}</p>
+              <p><strong>Phone:</strong> {selectedApplicant.phone}</p>
+              <p><strong>Aadhar:</strong> {selectedApplicant.aadhar}</p>
+              <p><strong>Caste:</strong> {selectedApplicant.caste}</p>
+              <p><strong>Disability:</strong> {selectedApplicant.disability}</p>
+              <p><strong>Admission Standard:</strong> {selectedApplicant.admissionStandard}</p>
+              <p><strong>Date of Submission:</strong> {selectedApplicant.date}</p>
+              <p><strong>Signature:</strong> {selectedApplicant.signature}</p>
+              {selectedApplicant.photo && (
+                <img src={selectedApplicant.photo} alt="Student" className="mt-4 rounded w-32 h-32 object-cover" />
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-// Summary Card Component
 function Card({ icon, title, count, color }) {
   return (
     <motion.div

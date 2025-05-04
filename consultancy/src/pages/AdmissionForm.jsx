@@ -36,7 +36,7 @@ export default function SVASAdmissionForm() {
       reader.readAsDataURL(file);
     }
   };
-  console.log("Form Data before submission:", formData);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -73,7 +73,7 @@ export default function SVASAdmissionForm() {
       });
   
       if (res.ok) {
-        alert("Form submitted successfully!");
+        alert(" Thank you , We will reach you soon through calls or messages!");
   
         // Reset the form
         setFormData({
@@ -136,7 +136,7 @@ export default function SVASAdmissionForm() {
 
         <div className="mb-4">
           <div className="flex items-center gap-6">
-            <span>3. Gender:</span>
+            <span>2. Gender:</span>
             <label className="flex items-center gap-2">
               <input type="radio" name="gender" value="Male" checked={formData.gender === "Male"} onChange={handleChange} /> Male
             </label>
@@ -147,67 +147,67 @@ export default function SVASAdmissionForm() {
         </div>
 
         <div className="mb-4">
-          <label>4. Date of Birth:
+          <label>3. Date of Birth:
             <input type="date" name="dob" value={formData.dob} onChange={handleChange} className="underline-input" />
           </label>
         </div>
 
         <div className="mb-4">
-          <label>5. Father's Name / Guardian:
+          <label>4. Father's Name / Guardian:
             <input type="text" name="fatherName" value={formData.fatherName} onChange={handleChange} className="underline-input" />
           </label>
         </div>
 
         <div className="mb-4">
-          <label>6. Mother's Name:
+          <label>5. Mother's Name:
             <input type="text" name="motherName" value={formData.motherName} onChange={handleChange} className="underline-input" />
           </label>
         </div>
 
         <div className="mb-4">
-          <label>7. Profession:
+          <label>6. Profession:
             <input type="text" name="profession" value={formData.profession} onChange={handleChange} className="underline-input" />
           </label>
         </div>
 
         <div className="mb-4">
-          <label>8. Name of the school, if studying at present:
+          <label>7. Name of the school, if studying at present:
             <input type="text" name="previousSchool" value={formData.previousSchool} onChange={handleChange} className="underline-input" />
           </label>
         </div>
 
         <div className="mb-4">
-          <label>9. Permanent Address:
+          <label>8. Permanent Address:
             <textarea name="address" value={formData.address} onChange={handleChange} className="underline-input h-16" />
           </label>
         </div>
 
         <div className="mb-4">
-          <label>Phone Number.:
+          <label>9. Phone Number.:
             <input type="text" name="phone" value={formData.phone} onChange={handleChange} className="underline-input" />
           </label>
         </div>
 
         <div className="mb-4">
-          <label>11. Aadhar Number:
+          <label>10. Aadhar Number:
             <input type="text" name="aadhar" value={formData.aadhar} onChange={handleChange} className="underline-input" />
           </label>
         </div>
 
         <div className="mb-4">
-          <label>12. Whether belongs to SC/OBC/ST/Gen:
+          <label>11. Caste:
             <input type="text" name="caste" value={formData.caste} onChange={handleChange} className="underline-input" />
           </label>
         </div>
 
         <div className="mb-4">
-          <label>14. Physically Handicapped (Yes/No):
+          <label>12. Physically Handicapped (Yes/No):
             <input type="text" name="disability" value={formData.disability} onChange={handleChange} className="underline-input" />
           </label>
         </div>
 
         <div className="mb-4">
-  <label>15. Admission Sought for Standard:
+  <label>13. Admission Sought for Standard:
     <input
       type="text"
       name="admissionStandard"

@@ -214,6 +214,15 @@ app.post('/submit-form', upload.single('photo'), async (req, res) => {
   }
 });
 
+app.get('/api/admissions', async (req, res) => {
+  try {
+    const data = await Admission.find();
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to fetch admissions' });
+  }
+});
+
 // Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
