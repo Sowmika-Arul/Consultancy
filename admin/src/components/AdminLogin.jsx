@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { ShieldCheck, Eye, EyeOff } from "lucide-react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+
+
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -12,6 +15,7 @@ export default function AdminLogin() {
   const handleLogin = async () => {
     setError("");
     setLoading(true);
+    const navigate = useNavigate();
 
     try {
       const response = await fetch("https://consultancy-sea9.onrender.com/login", {
@@ -25,7 +29,7 @@ export default function AdminLogin() {
       if (response.ok) {
         localStorage.setItem("token", data.token);
         alert("Login successful");
-        window.location.href = "/admin-dashboard";
+        navigate("/admin-dashboard");
       } else {
         setError(data.message);
       }
