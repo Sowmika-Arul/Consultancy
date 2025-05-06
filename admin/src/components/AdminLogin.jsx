@@ -12,10 +12,11 @@ export default function AdminLogin() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
+  
   const handleLogin = async () => {
     setError("");
     setLoading(true);
-    const navigate = useNavigate();
 
     try {
       const response = await fetch("https://consultancy-sea9.onrender.com/login", {
