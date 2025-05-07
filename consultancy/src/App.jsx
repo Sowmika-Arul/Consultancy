@@ -10,6 +10,7 @@ import EventForm from "./pages/EventForm";
 import Mission from "./pages/MissionPage";
 import Faculty from "./pages/FacultyPage";
 import Navbar from "./components/Navbar"; 
+import Footer from "./pages/Footer";
 import "./index.css";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route path="/faculty" element={<Faculty />} />
         <Route path="/facilities" element={<Facilities />} />
         <Route path="/admissionForm" element={<AdmissionForm />} />
+        <Route path="/footer" element={<Footer />} />
       </Routes>
     </Router>
   );

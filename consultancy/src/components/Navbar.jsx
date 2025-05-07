@@ -27,7 +27,7 @@ export default function Navbar() {
         {/* Logo */}
         <div className="flex items-center gap-2">
           <img src="/images/school logo.png" alt="School Logo" width="30" height="30" />
-          <h1 className="text-2xl font-bold text-red-900">Sri Venkateshwara A1</h1>
+          <h1 className="text-2xl font-bold text-red-900">Sri Venkateswara A1</h1>
         </div>
 
         {/* Desktop Menu */}

@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 import { CalendarDays, GraduationCap, Users, Globe } from "lucide-react";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { Link } from 'react-router-dom';
+import Footer from './Footer.jsx';
 
 export default function SchoolHomePage() {
   return (
@@ -31,7 +32,7 @@ export default function SchoolHomePage() {
             transition={{ delay: 0.2, duration: 0.8 }}
             className="text-4xl font-extrabold tracking-tight"
           >
-            Sri Venkateshwara A1 is more than just a place to get an education.
+            Sri Venkateswara A1 is more than just a place to get an education.
           </motion.h2>
           <motion.p
             initial={{ y: 20, opacity: 0 }}
@@ -107,6 +108,7 @@ export default function SchoolHomePage() {
      <Carousel/>
       <Features/>
       <Gallery/>
+      <Footer/>
     </div>
   );
 }
