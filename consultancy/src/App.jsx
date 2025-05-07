@@ -6,7 +6,6 @@ import Gallery from "./pages/Gallery1";
 import Facilities from "./pages/Facilities";
 import ContactPage from "./pages/ContactPage";
 import Vission from "./pages/Vission";
-import EventForm from "./pages/EventForm";
 import Mission from "./pages/MissionPage";
 import Faculty from "./pages/FacultyPage";
 import Navbar from "./components/Navbar"; 
@@ -25,7 +24,6 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/mission" element={<Mission />} />
-        <Route path="/eventForm" element={<EventForm />} />
         <Route path="/vission" element={<Vission />} />
         <Route path="/faculty" element={<Faculty />} />
         <Route path="/facilities" element={<Facilities />} />

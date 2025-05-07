@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { UserPlus, X, CalendarDays, BookOpen, Users } from "lucide-react";
+import { Link } from "react-router-dom";
+
 import {
   BarChart,
   Bar,
@@ -222,6 +224,13 @@ export default function AdmissionDashboard() {
           </BarChart>
         </ResponsiveContainer>
       </div>
+
+      <Link to="/eventForm" className="fixed top-6 right-6">
+  <button className="bg-blue-600 text-white px-4 py-2 rounded-xl shadow-lg hover:bg-blue-700 transition">
+    Event Form
+  </button>
+</Link>
+
     </div>
   );
 }
