@@ -127,3 +127,7 @@
   @apply border-b border-black bg-transparent w-full focus:outline-none text-sm placeholder-gray-400;
 }
 
+body {
+  font-family: "Times New Roman", serif;
+}
+

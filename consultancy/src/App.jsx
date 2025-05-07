@@ -13,6 +13,8 @@ import Navbar from "./components/Navbar";
 import Footer from "./pages/Footer";
 import "./index.css";
 
+
+
 function App() {
   return (
     <Router>

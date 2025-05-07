@@ -36,7 +36,7 @@
 .image-container {
   position: relative;
   width: 100%;
-  height: 500px; /* Adjusted for better proportions */
+  height: 450px; /* Adjusted for a smaller image size */
   overflow: hidden;
   border-radius: 12px;
 }
@@ -45,7 +45,8 @@
 .carousel-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* Ensures the image fully covers the container */
+  object-position: center; /* Keeps the image centered */
   transition: transform 0.3s ease;
 }
 
@@ -76,17 +77,6 @@
   margin-top: 1rem;
   font-weight: 300;
   line-height: 1.5;
-}
-
-/* Carousel Buttons */
-.carousel-buttons {
-  position: absolute;
-  top: 50%;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 1.5rem;
-  transform: translateY(-50%);
 }
 
 .nav-btn {
