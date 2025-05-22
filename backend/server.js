@@ -101,7 +101,7 @@ app.post('/events', async (req, res) => {
 });
 
 
-Get All Events
+
 app.get('/events', async (req, res) => {
   try {
     const events = await Event.find();
