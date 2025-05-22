@@ -107,7 +107,7 @@ export default function SchoolHomePage() {
 
      <Carousel/>
       <Features/>
-      <Gallery/><br></br>
+      {/* <Gallery/><br></br> */}<br></br>
       <Footer/>
     </div>
   );
