@@ -101,15 +101,15 @@ app.post('/events', async (req, res) => {
 });
 
 
-// Get All Events
-// app.get('/events', async (req, res) => {
-//   try {
-//     const events = await Event.find();
-//     res.json(events);
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// });
+Get All Events
+app.get('/events', async (req, res) => {
+  try {
+    const events = await Event.find();
+    res.json(events);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // GET /events/years
 app.get('/events/years', async (req, res) => {
