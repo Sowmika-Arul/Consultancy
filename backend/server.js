@@ -81,15 +81,18 @@ app.get('/admin-dashboard', (req, res) => {
 const eventSchema = new mongoose.Schema({
   title: String,
   description: String,
+  date: Date, // Added date field
   imageUrl: String,
 });
+
 const Event = mongoose.model('Event', eventSchema);
 
 // Create Event
 app.post('/events', async (req, res) => {
   try {
-    const { title, description, imageUrl } = req.body;
-    const newEvent = new Event({ title, description, imageUrl });
+    const { title, description, date, imageUrl } = req.body; // Destructure date
+    console.log(req.body);
+    const newEvent = new Event({ title, description, date, imageUrl }); // Include date
     await newEvent.save();
     res.status(201).json({ message: 'Event saved successfully!' });
   } catch (error) {
@@ -97,15 +100,32 @@ app.post('/events', async (req, res) => {
   }
 });
 
+
 // Get All Events
-app.get('/events', async (req, res) => {
+// app.get('/events', async (req, res) => {
+//   try {
+//     const events = await Event.find();
+//     res.json(events);
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// });
+
+// GET /events/years
+app.get('/events/years', async (req, res) => {
   try {
-    const events = await Event.find();
-    res.json(events);
+    const years = await Event.aggregate([
+      { $group: { _id: { $year: "$date" } } },
+      { $sort: { _id: -1 } }
+    ]);
+    const yearList = years.map(y => y._id);
+    res.json(yearList);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
+
 
 // Faculty Route
 app.get('/api/faculty', async (req, res) => {

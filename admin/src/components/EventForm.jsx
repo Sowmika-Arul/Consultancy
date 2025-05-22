@@ -3,16 +3,17 @@ import { useState } from "react";
 const EventForm = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [eventDate, setEventDate] = useState(""); // New state for event date
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleImageUpload = async () => {
     if (!image) return null;
-    
+
     const formData = new FormData();
     formData.append("file", image);
-    formData.append("upload_preset", "School_Events"); 
-    
+    formData.append("upload_preset", "School_Events");
+
     try {
       const response = await fetch(
         "https://api.cloudinary.com/v1_1/dvpdotfev/image/upload",
@@ -32,15 +33,17 @@ const EventForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
+
     const imageUrl = await handleImageUpload();
     if (!imageUrl) {
       setLoading(false);
       return;
     }
-    
-    const eventData = { title, description, imageUrl };
-    
+
+    const eventData = { title, description, date: eventDate, imageUrl };
+    console.log("Sending eventData:", eventData);
+
+
     try {
       await fetch("https://consultancy-sea9.onrender.com/events", {
         method: "POST",
@@ -52,11 +55,12 @@ const EventForm = () => {
       alert("Event added successfully!");
       setTitle("");
       setDescription("");
+      setEventDate("");
       setImage(null);
     } catch (error) {
       console.error("Error adding event", error);
     }
-    
+
     setLoading(false);
   };
 
@@ -80,6 +84,13 @@ const EventForm = () => {
             onChange={(e) => setDescription(e.target.value)}
             required
           ></textarea>
+          <input
+            type="date"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            value={eventDate}
+            onChange={(e) => setEventDate(e.target.value)}
+            required
+          />
           <input
             type="file"
             className="w-full p-3 border rounded-lg bg-gray-50 cursor-pointer"

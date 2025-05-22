@@ -3,37 +3,67 @@ import "./Gallery1.css";
 
 export default function GalleryModern() {
   const [events, setEvents] = useState([]);
+  const [filteredEvents, setFilteredEvents] = useState([]);
+  const [years, setYears] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false); // Track if the carousel is hovered
+  const [isHovered, setIsHovered] = useState(false);
+  const [selectedYear, setSelectedYear] = useState("All");
 
-  // Fetch events data
+  // Fetch events
   useEffect(() => {
     fetch("https://consultancy-sea9.onrender.com/events")
       .then((res) => res.json())
-      .then((data) => setEvents(data))
+      .then((data) => {
+        setEvents(data);
+        setFilteredEvents(data);
+      })
       .catch((err) => console.error("Error fetching events:", err));
   }, []);
 
-  // Automatically move to next event every 2 seconds (when not hovered)
+  // Fetch available years from backend
   useEffect(() => {
-    if (isHovered) return; // Don't auto-scroll if hovered
+    fetch("https://consultancy-sea9.onrender.com/events/years")
+      .then((res) => res.json())
+      .then((data) => setYears(data))
+      .catch((err) => console.error("Error fetching years:", err));
+  }, []);
+
+  // Update filtered events when year changes
+  useEffect(() => {
+    if (selectedYear === "All") {
+      setFilteredEvents(events);
+    } else {
+      const filtered = events.filter(event => {
+        const eventDate = new Date(event.date);
+        return eventDate.getFullYear().toString() === selectedYear;
+      });
+      setFilteredEvents(filtered);
+      setCurrentIndex(0); // Reset carousel
+    }
+  }, [selectedYear, events]);
+
+  // Auto-slide logic
+  useEffect(() => {
+    if (isHovered || filteredEvents.length <= 1) return;
     const interval = setInterval(() => {
       goNext();
-    }, 2000); // Change slide every 2 seconds
-
-    // Clear the interval when the component is unmounted or the user interacts
+    }, 2000);
     return () => clearInterval(interval);
-  }, [currentIndex, isHovered]);
+  }, [currentIndex, isHovered, filteredEvents]);
 
   const goPrev = () => {
-    setCurrentIndex((prev) => (prev === 0 ? events.length - 1 : prev - 1));
+    setCurrentIndex(prev =>
+      prev === 0 ? filteredEvents.length - 1 : prev - 1
+    );
   };
 
   const goNext = () => {
-    setCurrentIndex((prev) => (prev === events.length - 1 ? 0 : prev + 1));
+    setCurrentIndex(prev =>
+      prev === filteredEvents.length - 1 ? 0 : prev + 1
+    );
   };
 
-  const currentEvent = events[currentIndex] || {};
+  const currentEvent = filteredEvents[currentIndex] || {};
 
   return (
     <div className="gallery-container">
@@ -46,23 +76,46 @@ export default function GalleryModern() {
         <div className="blob" style={{ background: "#d4fc79", top: "85%", left: "50%", animationDelay: "10s" }}></div>
         <div className="ring"></div>
       </div>
+
       <h1 className="gallery-heading">CELEBRATIONS</h1>
+
+      {/* Year Filter */}
+      <div className="filter-container">
+        <label htmlFor="year-select" className="filter-label">Filter by Year: </label>
+        <select
+          id="year-select"
+          value={selectedYear}
+          onChange={(e) => setSelectedYear(e.target.value)}
+          className="year-dropdown"
+        >
+          <option value="All">All</option>
+          {years.map((year) => (
+            <option key={year} value={year}>{year}</option>
+          ))}
+        </select>
+      </div>
 
       <div className="carousel-card">
         <div
           className="image-container"
-          onMouseEnter={() => setIsHovered(true)} // Stop automatic transition on hover
-          onMouseLeave={() => setIsHovered(false)} // Resume automatic transition after hover
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
-          <img
-            src={currentEvent.imageUrl}
-            alt={currentEvent.title}
-            className="carousel-image"
-          />
-          <div className="overlay">
-            <h2 className="overlay-title">{currentEvent.title}</h2>
-            <p className="overlay-description">{currentEvent.description}</p>
-          </div>
+          {currentEvent.imageUrl ? (
+            <>
+              <img
+                src={currentEvent.imageUrl}
+                alt={currentEvent.title}
+                className="carousel-image"
+              />
+              <div className="overlay">
+                <h2 className="overlay-title">{currentEvent.title}</h2>
+                <p className="overlay-description">{currentEvent.description}</p>
+              </div>
+            </>
+          ) : (
+            <p className="no-event-message">No events to display</p>
+          )}
         </div>
       </div>
     </div>
