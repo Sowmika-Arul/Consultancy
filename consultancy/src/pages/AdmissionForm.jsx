@@ -1,4 +1,6 @@
 import React, { useState, useRef } from "react";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 export default function SVASAdmissionForm() {
   const [formData, setFormData] = useState({
@@ -41,15 +43,28 @@ export default function SVASAdmissionForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Required fields validation
     const requiredFields = [
-      "name", "gender", "dob", "fatherName", "motherName", "profession",
-      "previousSchool", "address", "phone", "aadhar", "caste", "disability",
-      "admissionStandard", "date", "signature"
+      "name",
+      "gender",
+      "dob",
+      "fatherName",
+      "motherName",
+      "profession",
+      "previousSchool",
+      "address",
+      "phone",
+      "aadhar",
+      "caste",
+      "disability",
+      "admissionStandard",
+      "date",
+      "signature",
     ];
 
     for (let field of requiredFields) {
       if (!formData[field]) {
-        alert(`Please fill in the ${field.replace(/([A-Z])/g, ' $1')} field.`);
+        alert(`Please fill in the ${field.replace(/([A-Z])/g, " $1")} field.`);
         return;
       }
     }
@@ -59,24 +74,53 @@ export default function SVASAdmissionForm() {
       return;
     }
 
-    const data = new FormData();
-    for (const key in formData) {
-      data.append(key, formData[key]);
-    }
-
     try {
+      // Generate PDF from form element
+      const element = printRef.current;
+      const canvas = await html2canvas(element, { scale: 2 });
+      const imgData = canvas.toDataURL("image/png");
+
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "pt",
+        format: [canvas.width, canvas.height],
+      });
+
+      pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+
+      // Convert pdf to blob
+      const pdfBlob = pdf.output("blob");
+
+      // Prepare form data to send
+      const dataToSend = new FormData();
+
+      // Append all form fields except photo
+      for (const key in formData) {
+        if (key !== "photo") {
+          dataToSend.append(key, formData[key]);
+        }
+      }
+
+      // Append photo file
+      dataToSend.append("photo", formData.photo);
+
+      // Append the generated PDF
+      dataToSend.append("printedForm", pdfBlob, "admission-form.pdf");
+
       const res = await fetch("https://consultancy-sea9.onrender.com/submit-form", {
         method: "POST",
-        body: data,
+        body: dataToSend,
       });
 
       if (res.ok) {
-        alert("Thank you, we will reach you soon through calls or messages!");
+        alert("Thank you! The form and printed version have been saved.");
 
+        // Trigger print after short delay
         setTimeout(() => {
           window.print();
         }, 100);
 
+        // Reset form after print
         setTimeout(() => {
           setFormData({
             name: "",
@@ -103,13 +147,16 @@ export default function SVASAdmissionForm() {
         alert("Submission failed: " + error.message);
       }
     } catch (err) {
-      alert("Network error");
+      alert("Error generating PDF or submitting form.");
       console.error(err);
     }
   };
 
   return (
-    <div ref={printRef} className="max-w-4xl mx-auto p-8 bg-white shadow-lg border mt-10 font-serif text-sm">
+    <div
+      ref={printRef}
+      className="max-w-4xl mx-auto p-8 bg-white shadow-lg border mt-10 font-serif text-sm"
+    >
       <div className="flex justify-between items-start mb-4">
         <div className="flex-1 text-center">
           <h1 className="text-2xl font-bold uppercase">Sri Venkateshwara AI School</h1>
@@ -119,7 +166,13 @@ export default function SVASAdmissionForm() {
           {photoPreview ? (
             <img src={photoPreview} alt="Student" className="object-cover w-full h-full" />
           ) : (
-            <span className="text-center text-xs">Photograph<br />of<br />Student</span>
+            <span className="text-center text-xs">
+              Photograph
+              <br />
+              of
+              <br />
+              Student
+            </span>
           )}
           <input
             type="file"
@@ -145,7 +198,8 @@ export default function SVASAdmissionForm() {
           { label: "13. Admission Sought for Standard:", name: "admissionStandard" },
         ].map((field, idx) => (
           <div className="mb-4" key={idx}>
-            <label>{field.label}
+            <label>
+              {field.label}
               <input
                 type={field.type || "text"}
                 name={field.name}
@@ -160,7 +214,7 @@ export default function SVASAdmissionForm() {
         <div className="mb-4">
           <div className="flex items-center gap-6">
             <span>2. Gender:</span>
-            {['Male', 'Female'].map((g) => (
+            {["Male", "Female"].map((g) => (
               <label className="flex items-center gap-2" key={g}>
                 <input
                   type="radio"
@@ -168,21 +222,29 @@ export default function SVASAdmissionForm() {
                   value={g}
                   checked={formData.gender === g}
                   onChange={handleChange}
-                /> {g}
+                />{" "}
+                {g}
               </label>
             ))}
           </div>
         </div>
 
         <div className="mb-4">
-          <label>8. Permanent Address:
-            <textarea name="address" value={formData.address} onChange={handleChange} className="underline-input h-16" />
+          <label>
+            8. Permanent Address:
+            <textarea
+              name="address"
+              value={formData.address}
+              onChange={handleChange}
+              className="underline-input h-16"
+            />
           </label>
         </div>
 
         <div className="border-t pt-4 mt-6 text-sm">
           <p className="italic mb-2">
-            That’s the particulars are true and correct to the best of my knowledge and belief. I shall follow the rules and regulations of the school for all purposes.
+            That’s the particulars are true and correct to the best of my knowledge and belief. I shall
+            follow the rules and regulations of the school for all purposes.
           </p>
 
           <div className="flex justify-between mt-6">
@@ -216,7 +278,10 @@ export default function SVASAdmissionForm() {
         </div>
 
         <div className="hide-on-print">
-          <button type="submit" className="mt-8 block w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+          <button
+            type="submit"
+            className="mt-8 block w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          >
             Submit Form
           </button>
         </div>
