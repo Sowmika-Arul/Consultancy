@@ -43,7 +43,6 @@ export default function SVASAdmissionForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Required fields validation
     const requiredFields = [
       "name",
       "gender",
@@ -75,36 +74,35 @@ export default function SVASAdmissionForm() {
     }
 
     try {
-      // Generate PDF from form element
       const element = printRef.current;
-      const canvas = await html2canvas(element, { scale: 2 });
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: false,
+        logging: true,
+      });
+
       const imgData = canvas.toDataURL("image/png");
+      const pdfWidth = canvas.width * 0.75;
+      const pdfHeight = canvas.height * 0.75;
 
       const pdf = new jsPDF({
         orientation: "portrait",
         unit: "pt",
-        format: [canvas.width, canvas.height],
+        format: [pdfWidth, pdfHeight],
       });
 
-      pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
 
-      // Convert pdf to blob
       const pdfBlob = pdf.output("blob");
 
-      // Prepare form data to send
       const dataToSend = new FormData();
-
-      // Append all form fields except photo
       for (const key in formData) {
         if (key !== "photo") {
           dataToSend.append(key, formData[key]);
         }
       }
-
-      // Append photo file
       dataToSend.append("photo", formData.photo);
-
-      // Append the generated PDF
       dataToSend.append("printedForm", pdfBlob, "admission-form.pdf");
 
       const res = await fetch("https://consultancy-sea9.onrender.com/submit-form", {
@@ -114,13 +112,8 @@ export default function SVASAdmissionForm() {
 
       if (res.ok) {
         alert("Thank you! The form and printed version have been saved.");
+        setTimeout(() => window.print(), 100);
 
-        // Trigger print after short delay
-        setTimeout(() => {
-          window.print();
-        }, 100);
-
-        // Reset form after print
         setTimeout(() => {
           setFormData({
             name: "",
@@ -144,11 +137,11 @@ export default function SVASAdmissionForm() {
         }, 500);
       } else {
         const error = await res.json();
-        alert("Submission failed: " + error.message);
+        alert("Submission failed: " + (error.message || "Unknown error"));
       }
     } catch (err) {
-      alert("Error generating PDF or submitting form.");
-      console.error(err);
+      console.error("Error generating PDF or submitting form:", err);
+      alert("Error generating PDF or submitting form. Check console for details.");
     }
   };
 
@@ -156,6 +149,7 @@ export default function SVASAdmissionForm() {
     <div
       ref={printRef}
       className="max-w-4xl mx-auto p-8 bg-white shadow-lg border mt-10 font-serif text-sm"
+      style={{ color: "#000", backgroundColor: "#fff" }}
     >
       <div className="flex justify-between items-start mb-4">
         <div className="flex-1 text-center">
@@ -167,11 +161,7 @@ export default function SVASAdmissionForm() {
             <img src={photoPreview} alt="Student" className="object-cover w-full h-full" />
           ) : (
             <span className="text-center text-xs">
-              Photograph
-              <br />
-              of
-              <br />
-              Student
+              Photograph<br />of<br />Student
             </span>
           )}
           <input
@@ -205,7 +195,7 @@ export default function SVASAdmissionForm() {
                 name={field.name}
                 value={formData[field.name]}
                 onChange={handleChange}
-                className="underline-input"
+                className="border-b border-black w-full bg-transparent focus:outline-none px-1 py-0.5"
               />
             </label>
           </div>
@@ -222,7 +212,7 @@ export default function SVASAdmissionForm() {
                   value={g}
                   checked={formData.gender === g}
                   onChange={handleChange}
-                />{" "}
+                />
                 {g}
               </label>
             ))}
@@ -236,7 +226,7 @@ export default function SVASAdmissionForm() {
               name="address"
               value={formData.address}
               onChange={handleChange}
-              className="underline-input h-16"
+              className="border-b border-black w-full bg-transparent focus:outline-none px-1 py-0.5 h-16"
             />
           </label>
         </div>
@@ -255,7 +245,7 @@ export default function SVASAdmissionForm() {
                 name="date"
                 value={formData.date}
                 onChange={handleChange}
-                className="inline-block border-b border-black w-32 text-center pl-3"
+                className="inline-block border-b border-black text-center pl-3 bg-transparent focus:outline-none"
               />
             </span>
             <span>
@@ -265,7 +255,7 @@ export default function SVASAdmissionForm() {
                 name="signature"
                 value={formData.signature}
                 onChange={handleChange}
-                className="inline-block border-b border-black w-64 text-center pl-3"
+                className="inline-block border-b border-black text-center pl-3 w-64 bg-transparent focus:outline-none"
                 placeholder="Enter Signature"
               />
             </span>
