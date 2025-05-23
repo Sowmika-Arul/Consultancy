@@ -196,59 +196,41 @@ const admissionSchema = new mongoose.Schema({
 
 const Admission = mongoose.model('Admission', admissionSchema);
 
-app.post('/submit-form', upload.fields([
-  { name: 'photo', maxCount: 1 },
-  { name: 'printedForm', maxCount: 1 }
-]), async (req, res) => {
+app.post('/submit-form', upload.single('photo'), async (req, res) => {
   try {
+    // If a photo is uploaded, upload to Cloudinary
     let photoUrl = null;
-    let pdfUrl = null;
-
-    // Upload photo to Cloudinary if exists
-    if (req.files['photo']) {
-      const photoFile = req.files['photo'][0];
-      photoUrl = await new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
-          { resource_type: 'image' },
-          (error, result) => {
-            if (error) return reject(error);
-            resolve(result.secure_url);
+    if (req.file) {
+      const result = await cloudinary.uploader.upload_stream(
+        { resource_type: 'image' },
+        (error, result) => {
+          if (error) {
+            throw new Error('Cloudinary upload failed');
           }
-        );
-        stream.end(photoFile.buffer);
-      });
+          photoUrl = result.secure_url; // Get the secure URL from Cloudinary
+        }
+      );
+      result.end(req.file.buffer); // Upload file buffer to Cloudinary
     }
 
-    // Upload PDF (printed form) to Cloudinary if exists
-    if (req.files['printedForm']) {
-      const pdfFile = req.files['printedForm'][0];
-      pdfUrl = await new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
-          { resource_type: 'raw' }, // raw for pdf or other files
-          (error, result) => {
-            if (error) return reject(error);
-            resolve(result.secure_url);
-          }
-        );
-        stream.end(pdfFile.buffer);
-      });
-    }
+    console.log("Received data:", req.body);
 
-    // Prepare data to save
+    // Create and save admission record
     const admissionData = {
       ...req.body,
-      photo: photoUrl,
-      printedFormUrl: pdfUrl,  // save the PDF URL here
+      photo: photoUrl, // Store Cloudinary URL in the database
     };
+    console.log(req.body);
+    const admission = new Admission({
+      ...admissionData,
+    });
 
-    // Save to DB
-    const admission = new Admission(admissionData);
     await admission.save();
 
     res.status(200).json({ message: 'Form submitted successfully' });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ error: 'Failed to submit form' });
+    console.error(error);
   }
 });
 
